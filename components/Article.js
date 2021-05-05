@@ -114,3 +114,59 @@ const data = [
   Step 5: Try adding new article object to the data array. Make sure it is in the same format as the others.
   Refresh the page to see the new article.
 */
+
+const articleMaker = payload => {
+  return (
+    payload.map(article => {
+      Title(article.title);
+      Timestamp(article.date);
+      appender([
+        article.firstParagraph,
+        article.secondParagraph,
+        article.thirdParagraph
+      ]);
+    })
+  )
+};
+
+const Timestamp = date => Paragraph(date);
+const pArray = (first, second, third) => [first, second, third];
+const expand = state => !state;
+
+const Title = title => {
+  const header = document.createElement(`h2`);
+  
+  header.textContent = title;
+  header.classList.add('h2');
+
+  return header;
+}
+
+const Paragraph = payload => {
+  const paragraph = document.createElement(`p`);
+  const expander = document.createElement(`span`);
+
+  paragraph.textContent = payload;
+  paragraph.classList.add('p');
+
+  expander.textContent = "+";
+  expander.classList.add("expandButton", "span")
+  expander.addEventListener("click", event => {
+    event.target.classList["article-open"] ? 
+    event.target.classList.remove("article-open") :
+    event.target.classList.append("article-open");
+  });
+
+  paragraph.append(expander);
+  
+  return paragraph;
+}
+
+const appender = paragraphs => {
+    const nodes = paragraphs.map(paragraph => Paragraph(paragraph));
+    console.log(nodes)
+
+    return document.body.append(...nodes);
+};
+
+articleMaker(data);
