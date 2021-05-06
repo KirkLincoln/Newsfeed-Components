@@ -86,6 +86,15 @@ const data = [
     thirdParagraph: `Hodor hodor - hodor... Hodor hodor hodor hodor. Hodor. Hodor! Hodor hodor, hodor hodor hodor hodor hodor; hodor hodor? Hodor!
           Hodor hodor, HODOR hodor, hodor hodor?! Hodor! Hodor hodor, HODOR hodor, hodor hodor, hodor, hodor hodor. Hodor, hodor.
           Hodor. Hodor, hodor, hodor. Hodor hodor... Hodor hodor hodor?! Hodor, hodor... Hodor hodor HODOR hodor, hodor hodor. Hodor.`
+  },
+  {
+    title: 'Yur dur',
+    date: 'June 2st, 2011',
+    firstParagraph: `Look `,
+
+    secondParagraph: `At `,
+
+    thirdParagraph: `This not this`
   }
 ];
 
@@ -114,3 +123,66 @@ const data = [
   Step 5: Try adding new article object to the data array. Make sure it is in the same format as the others.
   Refresh the page to see the new article.
 */
+
+const articleMaker = payload => {
+  return (
+    payload.map(article => {
+      Title(article.title);
+      Timestamp(article.date);
+      appender([
+        article.firstParagraph,
+        article.secondParagraph,
+        article.thirdParagraph
+      ]);
+    })
+  )
+};
+
+const Timestamp = date => Paragraph(date);
+const pArray = (first, second, third) => [first, second, third];
+const expand = state => !state;
+
+const Title = title => {
+  const sectionTitle = document.createElement(`h2`);
+  
+  sectionTitle.textContent = title;
+  sectionTitle.classList.add('h2');
+
+  return sectionTitle;
+}
+
+const Paragraph = payload => {
+  const paragraph = document.createElement(`p`);
+
+  paragraph.textContent = payload;
+  paragraph.classList.add('p');
+
+  
+  return paragraph;
+}
+
+const appender = paragraphs => {
+    const nodes = paragraphs.map(paragraph => Paragraph(paragraph));
+
+    document.body.append(...nodes);
+    document.body.append(expanderButton());
+};
+
+const expanderButton = () => {
+  const expander = document.createElement(`span`);
+
+  expander.textContent = "+";
+  expander.classList.add("expandButton", "span")
+
+  expander.addEventListener("click", event => {
+    const result = [...event.target.classList].filter(classes => classes === "article-open");
+
+    result.length > 0 ?
+    event.target.classList.remove("article-open") :
+    event.target.classList.add("article-open");
+  });
+
+  return expander;
+}
+
+// articleMaker(data);
